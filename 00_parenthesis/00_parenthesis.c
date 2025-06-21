@@ -43,7 +43,7 @@ int lq_is_empty(linked_queue * queue);
 /************************
  * main function
  ************************/
-int main(void)
+int main(void) 
 {
     linked_queue * queue;
     lq_create_queue(&queue);
