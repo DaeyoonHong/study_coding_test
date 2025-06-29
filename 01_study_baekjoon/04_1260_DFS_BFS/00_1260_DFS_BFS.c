@@ -91,19 +91,21 @@ void add_edge(node **adj, node *from, node *to)
 
     to->next = current_node->next;
     current_node->next = to;
-
 }
 
 void bfs(node **adj, int start_v)
 {
-    int *queue = (int *)malloc(sizeof(int) * n);
+    int *queue = (int *)malloc(sizeof(int) * (n));
     int front = 0, rear = 0;
 
     int *visited = (int *)malloc(sizeof(int) * (n + 1));
 
-    for (int i = 0; i < n + 1; i++)
+    for (int i = 0; i < n; i++)
     {
         queue[i] = 0;
+    }
+    for (int i = 0; i <= n; i++)
+    {
         visited[i] = 0;
     }
     queue[rear++] = start_v;
