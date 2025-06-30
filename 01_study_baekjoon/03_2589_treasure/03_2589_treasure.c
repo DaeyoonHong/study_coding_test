@@ -17,10 +17,10 @@ typedef struct node
     int vertex;
     struct node * next;
 } node;
+node * adj[MAX_V];
 
 char map[MAX_H][MAX_W + 1];
 int H, W;
-node * adj[MAX_V];
 
 /***********************
  * function prototypes

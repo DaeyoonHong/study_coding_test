@@ -69,7 +69,7 @@ char * solution(int numbers[], size_t numbers_len)
         strcat(answer, str_numbers[i]);
     }
 
-    if(answer[0 == '0'])
+    if(answer[0] == '0')
     {
         answer[1] == '\0';
     }
