@@ -72,3 +72,16 @@ int *solution(int prices[], size_t len)
 
     return answer;
 }
+#if 0
+typedef struct node
+{
+    int data;
+} node;
+
+typedef struct stack
+{
+    int capacity;
+    int top;
+    node *nodes;
+} stack;
+#endif

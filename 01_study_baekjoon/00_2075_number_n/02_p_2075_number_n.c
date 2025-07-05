@@ -1,17 +1,7 @@
-/***************************
- * 힙을 구현하여 상위 다섯개 데이터만 저장
- ***************************/
-
-/**************************
- * include libraries
- **************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
 
-/**************************
- * define datatypes
- **************************/
 typedef long element_type;
 typedef struct tag_heap_node
 {
@@ -19,13 +9,11 @@ typedef struct tag_heap_node
 } heap_node;
 typedef struct tag_heap
 {
-    heap_node *nodes;
+    heap_node *nodes; /* heap_node 를 요소로 갖는 배열 (heap_node 포인터를 요소로 갖는 것이 아님) */
     int capacity;
     int used_size;
 } heap;
-/**************************
- * function prototype
- **************************/
+
 heap *heap_create(int initialize);
 void heap_destroy(heap *h);
 void heap_insert(heap *h, element_type new_data);
@@ -35,53 +23,23 @@ int heap_get_left_child(int index);
 void heap_swap_nodes(heap *h, int idx1, int idx2);
 int compare_nodes(const void *elem1, const void *elem2);
 
-/*************************
- * main function
- *************************/
-int main(void)
-{
-    int n = 0;
-
-    scanf("%d", &n);
-    heap *h = heap_create(n);
-
-    long data = 0;
-    for (int i = 0; i < n * n; i++)
-    {
-        scanf("%ld", &data);
-        heap_insert(h, data);
-    }
-
-    printf("%ld\n", h->nodes[0].data);
-
-    heap_destroy(h);
-
-    return 0;
-}
-
-/**************************
- * define function
- **************************/
 heap *heap_create(int initialize)
 {
     heap *new_heap = (heap *)malloc(sizeof(heap));
     new_heap->capacity = initialize;
     new_heap->used_size = 0;
     new_heap->nodes = (heap_node *)malloc(sizeof(heap_node) * new_heap->capacity);
-
+    /* heap_node 를 요소로 갖는 배열 (heap_node 포인터를 요소로 갖는 것이 아님) */
     return new_heap;
 }
-
 void heap_destroy(heap *h)
 {
     free(h->nodes);
     free(h);
 }
-
 void heap_insert(heap *h, element_type new_data)
 {
-
-    if (h->used_size == h->capacity)
+    if(h->used_size == h-> capacity) /* 힙이 가득 찬 경우 (힙에 N개의 데이터가 저장된 경우) */
     {
         if(new_data > h->nodes[0].data)
         {
@@ -94,21 +52,19 @@ void heap_insert(heap *h, element_type new_data)
             return;
         }
     }
-
     int current_position = h->used_size;
     int parent_position = heap_get_parent(current_position);
 
     h->nodes[current_position].data = new_data;
 
-    while (current_position > 0 && h->nodes[current_position].data < h->nodes[parent_position].data)
+    while(current_position > 0 && h->nodes[parent_position].data > h->nodes[current_position].data)
     {
         heap_swap_nodes(h, current_position, parent_position);
         current_position = parent_position;
-        parent_position = heap_get_parent(current_position);
+        heap_get_parent(current_position);
     }
     h->used_size++;
 }
-
 void heap_delete_min(heap *h, heap_node *root)
 {
     int parent_position = 0;
@@ -119,26 +75,28 @@ void heap_delete_min(heap *h, heap_node *root)
     memset(&h->nodes[0], 0, sizeof(heap_node));
 
     h->used_size--;
-    heap_swap_nodes(h, 0, h->used_size);
+    heap_swap_node(h, 0, h->used_size);
 
     left_position = heap_get_left_child(0);
     right_position = left_position + 1;
 
-    while (1)
+    while(1)
     {
         int selected_child = 0;
 
-        if (left_position >= h->used_size)
+        /* 자식 노드가 없는 마지막 노드까지 순회하는 경우 비교 종료 */
+        if(left_position >= h->used_size)
         {
             break;
         }
-        if (right_position >= h->used_size)
+        /* 왼쪽 자식노드가 마지막 노드인 경우*/
+        if(right_position >= h->used_size)
         {
             selected_child = left_position;
         }
-        else
+        else /* 자식 노드가 둘 다 있는 경우 */
         {
-            if (h->nodes[left_position].data < h->nodes[right_position].data)
+            if(h->nodes[left_position].data < h->nodes[right_position].data)
             {
                 selected_child = left_position;
             }
@@ -147,20 +105,18 @@ void heap_delete_min(heap *h, heap_node *root)
                 selected_child = right_position;
             }
         }
-        if (h->nodes[selected_child].data < h->nodes[parent_position].data)
+
+        /* 비교 대상으로 선정된 자식 노드와 부모 노드의 비교 */
+        if(h->nodes[selected_child].data < h->nodes[parent_position].data)
         {
             heap_swap_nodes(h, parent_position, selected_child);
             parent_position = selected_child;
         }
-        else
-        {
-            break;
-        }
-        left_position = heap_get_left_child(parent_position);
+
+        left_position = heap_get_left_child(0);
         right_position = left_position + 1;
     }
 }
-
 int heap_get_parent(int index)
 {
     return (int)((index - 1) / 2);
@@ -169,25 +125,21 @@ int heap_get_left_child(int index)
 {
     return (2 * index) + 1;
 }
-
-void heap_swap_nodes(heap *h, int idx1, int idx2)
+void heap_swap_node(heap *h, int idx1, int idx2)
 {
     element_type temp;
     temp = h->nodes[idx1].data;
     h->nodes[idx1].data = h->nodes[idx2].data;
     h->nodes[idx2].data = temp;
 }
-
-int compare_nodes(const void *elem1, const void *elem2)
+int compare_node(const void *elem1, const void *elem2)
 {
+    /* elem1, elem2 : nodes[i], node[i + 1] 의 시작 주소 
+     = 구조체 heap_node 의 시작 주소 */
     heap_node *elem_1 = (heap_node *)elem1;
     heap_node *elem_2 = (heap_node *)elem2;
 
-    if (elem_1->data > elem_2->data)
-    {
-        return -1;
-    }
-    else if (elem_1->data < elem_2->data)
+    if(elem_1->data > elem_2->data)
     {
         return 1;
     }

@@ -27,7 +27,6 @@ int solution(const char* word)
     char a[5] =  {'A', 'E', 'I', 'O', 'U'};
 
 
-    int repeat_cnt = 0;
     char * current_word = (char *)malloc(sizeof(char) * len+ 1);
     word_cmp(word, current_word, a, 1, len);
     

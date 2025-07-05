@@ -22,10 +22,10 @@ int main(void)
     int n = 0;
     scanf("%d", &n);
 
-    int * numbers = (int *)malloc(sizeof(int) * n * n);
+    long * numbers = (long *)malloc(sizeof(long) * n * n);
     for(int i = 0 ; i < (n * n) ; i++)
     {
-        scanf("%d", &numbers[i]);
+        scanf("%ld", &numbers[i]);
     }
     #if 0
     for(int i = 0; i < (n * n) ; i++)
@@ -44,7 +44,7 @@ int main(void)
     #endif
 
 
-    printf("%d", numbers[n - 1]);
+    printf("%ld", numbers[n - 1]);
 
     free(numbers);
 
@@ -56,14 +56,14 @@ int main(void)
  *************************/
 int compare(const void * a, const void * b)
 {
-    int * num1 = (int *) a;
-    int * num2 = (int *) b;
+    long num1 = *(long *) a;
+    long num2 = *(long *) b;
 
-    if(*num1 > *num2)
+    if(num1 > num2)
     {
         return -1;
     }
-    else if(*num1 < *num2)
+    else if(num1 < num2)
     {
         return 1;
     }

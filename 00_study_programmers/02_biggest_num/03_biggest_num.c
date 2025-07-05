@@ -38,7 +38,7 @@ int compare_strings(const void * a, const void * b)
    - a[i][j]: 개별 문자
    */
 
-   return strcmp(str2, str1);
+   return strcmp(str2, str1); 
    /* compare 함수의 출력이 음수이면 순서 유지, 양수이면 순서 변경 */
    /* 
    strcmp 함수 출력
