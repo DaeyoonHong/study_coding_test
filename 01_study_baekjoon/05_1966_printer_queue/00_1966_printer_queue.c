@@ -55,7 +55,6 @@ int main(void)
         int ans = 1;
         while(1)
         {
-
             if(is_max(queue[i]) == 1)
             {
                 q_node *current = queue[i];
